@@ -78,7 +78,7 @@ if os.path.exists("./token"):
     token = open('./token', 'r').read()
     logging.info("Using token from ./token file")
 else:
-    token = os.getenv['DISCORD_TOKEN']
+    token = os.getenv()['DISCORD_TOKEN']
     logging.info("Using token from enviroment variable 'DISCORD_TOKEN'")
 
 client.run(token)
