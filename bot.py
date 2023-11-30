@@ -49,7 +49,7 @@ def build_status(data):  # build status message
 @client.event
 async def on_ready():
     print(f'We have logged in as {client.user}')
-    CHANNEL_ID = 1179822889671860224
+    CHANNEL_ID = 1019030265957458030
     channel = client.get_channel(CHANNEL_ID)
     new_state = channel.name
 
