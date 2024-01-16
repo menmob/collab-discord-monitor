@@ -62,6 +62,10 @@ async def on_ready():
         while channel.name == new_state:  # check for updates every 10 seconds
             await asyncio.sleep(10)
             new_state = build_status(get_data())
+        if last_open_time is not None and time.time() > (last_open_time + WAIT_TIME_PING):
+            ping_channel.send("Lab is now open @<1195517531587362826>")
+            logging.info("Sending lab now open ping")
+            last_open_time = None
         logging.debug("Change in state, updating status in 15 seconds...")
 
         # wait to see if a bunch of people are about to log in at once
@@ -71,11 +75,6 @@ async def on_ready():
         if "CLOSED" in channel.name and "OPEN" in current_state:
             last_open_time = time.time()
         elif "CLOSED" in new_state:
-            last_open_time = None
-
-        if last_open_time is not None and time.time() > (last_open_time + WAIT_TIME_PING):
-            ping_channel.send("Lab is now open @<1195517531587362826>")
-            logging.info("Sending lab now open ping")
             last_open_time = None
 
         logging.info("Updating channel")
