@@ -50,21 +50,33 @@ def build_status(data):  # build status message
 async def on_ready():
     print(f'We have logged in as {client.user}')
     CHANNEL_ID = 1019030265957458030
+    PIMG_CHANNEL_ID = 861745331729334285
+    WAIT_TIME_PING = 300
     channel = client.get_channel(CHANNEL_ID)
+    ping_channel = client.get_channel(PIMG_CHANNEL_ID)
     new_state = channel.name
-
+    last_open_time = None
     logging.debug(f"Current Channel Name: {new_state}")
 
     while True:
         while channel.name == new_state:  # check for updates every 10 seconds
             await asyncio.sleep(10)
             new_state = build_status(get_data())
-
         logging.debug("Change in state, updating status in 15 seconds...")
 
         # wait to see if a bunch of people are about to log in at once
         await asyncio.sleep(15)
         current_state = build_status(get_data())
+
+        if "CLOSED" in channel.name and "OPEN" in current_state:
+            last_open_time = time.time()
+        elif "CLOSED" in new_state:
+            last_open_time = None
+
+        if last_open_time is not None and time.time() > (last_open_time + WAIT_TIME_PING):
+            ping_channel.send("Lab is now open @<1195517531587362826>")
+            logging.info("Sending lab now open ping")
+            last_open_time = None
 
         logging.info("Updating channel")
 
