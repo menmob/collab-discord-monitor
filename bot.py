@@ -35,15 +35,14 @@ def build_status(data):  # build status message
     STATUS_MESSAGE = "Lab Status:"
     CLOSED_MESSAGE = f"{STATUS_MESSAGE} 🔴 CLOSED"
 
-    match (data['open']):
-        case "OPEN":
-            return f"{STATUS_MESSAGE} 🟢 ({str(len(data['members']))}) OPEN"
-        case "CLOSED":
-            return CLOSED_MESSAGE
-        case "LIMITED":
-            return f"{STATUS_MESSAGE} 🟡 ({(str(len(data['members'])))}) LIMITED"
-        case "ERROR":
-            return CLOSED_MESSAGE
+    if data['open']:
+        return f"{STATUS_MESSAGE} 🟢 ({str(len(data['members']))}) OPEN"
+    else:
+        return CLOSED_MESSAGE
+       # case "LIMITED":
+        #   return f"{STATUS_MESSAGE} 🟡 ({(str(len(data['members'])))}) LIMITED"
+        # case "ERROR":
+        # return CLOSED_MESSAGE
 
 
 @client.event
