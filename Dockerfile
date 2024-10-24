@@ -1,7 +1,7 @@
 FROM pkgxdev/pkgx:latest
-RUN mkdir /app/run
-COPY * /app/run
+RUN mkdir /app
+COPY ./* /app/
+RUN cd /app
 RUN dev 
-RUN cd /app/run
-RUN python -m pip install -r requirements.txt
-RUN python bot.py
+RUN python3 -m pip install -r requirements.txt
+RUN python3 bot.py
